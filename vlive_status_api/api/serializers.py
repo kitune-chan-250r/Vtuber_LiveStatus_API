@@ -16,6 +16,8 @@ class VtuberSerializer(serializers.ModelSerializer):
         return obj.get_production_display()
 
 class OnLiveSerializer(serializers.ModelSerializer):
+    uid = VtuberSerializer()
     class Meta:
         model = On_Live
         fields = ('uid', 'start_time', 'live_title')
+

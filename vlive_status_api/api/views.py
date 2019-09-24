@@ -6,6 +6,12 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from .models import Vtuber, On_Live
 from .serializers import VtuberSerializer, OnLiveSerializer
+from rest_framework.decorators import api_view
+
+#filter 
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
 
 
 @csrf_exempt
@@ -67,3 +73,43 @@ def onlive_all(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+#onlive_detail
+@api_view(['GET', 'PUT', 'DELETE'])
+def onlive_detail(request, pk):
+    """
+    Retrieve, update or delete a code snippet.
+    """
+    try:
+        snippet = On_Live.objects.get(pk=pk)
+    except On_Live.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OnLiveSerializer(snippet)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = OnLiveSerializer(snippet, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        snippet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+#?pr=[production name]で検索可能に
+class OnLiveListView(generics.ListCreateAPIView):
+    queryset = On_Live.objects.all()
+    serializer_class = OnLiveSerializer
+
+    def get_queryset(self):
+        queryset = On_Live.objects.all()
+        pr = self.request.query_params.get('pr', None)
+        if pr is not None:
+            queryset = queryset.filter(uid__production=pr)
+        return queryset
