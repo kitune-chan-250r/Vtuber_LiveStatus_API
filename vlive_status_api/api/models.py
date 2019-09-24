@@ -17,8 +17,8 @@ class Vtuber(models.Model):
 
 	uid = models.CharField(max_length=50, primary_key=True)
 	liver_name = models.CharField(max_length=100)
-	production = models.CharField(max_length=100)
-	gender = models.CharField(max_length=20)
+	production = models.CharField(max_length=100, choices=PRODUCTION)
+	gender = models.CharField(max_length=20, choices=GENDER)
 
 
 class On_Live(models.Model):
