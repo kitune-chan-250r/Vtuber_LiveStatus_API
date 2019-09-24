@@ -1,0 +1,16 @@
+#Vtuber_LiveStatus_API db model sample.
+
+'Vtuber'{
+    'uid': 'UCxxxxxx'
+    'production': 'hololive',
+    'liver_name': '湊あくあch',
+    'gender': 'female'
+}   
+
+'on_live'{
+    'uid': ForeginKey('Vtuber'),
+    'start_time': DateTimeObj,
+    'past_time': time,
+    'live_title': '歌枠'
+}
+
