@@ -7,4 +7,4 @@ django.setup()
 from api.models import *
 
 
-print(On_Live.objects.all()[0].live_title)
+print(On_Live.objects.all())
