@@ -36,7 +36,7 @@ on_livers = [liver.uid.uid for liver in on_liver]
 for uid in uids:
     status = live_status(uid)
     if status is not False and uid not in on_livers:
-        data = {'uid': uid, 'live_title': 'title'}
+        data = {'uid': uid, 'live_title': 'title', 'live_url': status}
         res = vlsa.post(BASE_URL+'onlive', data)
     elif uid in on_livers:
         #on_liveから外す
