@@ -1,3 +1,4 @@
 
 .DS_Store
 *.pyc
+vlive_status_api/db.sqlite3

@@ -7,4 +7,4 @@ django.setup()
 from api.models import *
 
 
-print(On_Live.objects.all())
+print(On_Live.objects.all().delete())
