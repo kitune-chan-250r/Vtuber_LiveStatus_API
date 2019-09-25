@@ -15,6 +15,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework.response import Response
+from rest_framework import status
 
 
 @csrf_exempt
@@ -62,7 +63,7 @@ def snippet_detail(request, pk):
         return HttpResponse(status=204)
 
 
-@csrf_exempt
+"""@csrf_exempt
 def onlive_all(request):
     if request.method == 'GET':
         snippets = On_Live.objects.all()
@@ -76,7 +77,22 @@ def onlive_all(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+"""
+class OnLiveList(APIView):
+    """
+    List all snippets, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        snippets = On_Live.objects.all()
+        serializer = OnLive_POST_Serializer(snippets, many=True)
+        return Response(serializer.data)
 
+    def post(self, request, format=None):
+        serializer = OnLive_POST_Serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class OnLiveDetail(APIView):
     def get_object(self, pk):
