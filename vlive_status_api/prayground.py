@@ -1,8 +1,10 @@
 import Vtuber_LiveStatus_API_lib as vlsa
+import requests, bs4, re, sys, os
+import django
+sys.path.append("api")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vlive_status_api.settings')
+django.setup()
+from api.models import *
 
-BASE_URL = 'http://localhost:8000/api/'
 
-data = {'uid':'UCsumple', 'live_title':'testpost'}
-
-res = vlsa.delete(BASE_URL + 'onlive', 'UCsumple')
-print(res)
+print(On_Live.objects.all()[0].live_title)

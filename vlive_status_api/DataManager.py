@@ -26,17 +26,24 @@ def live_status(channelid):
     else:
         return False
 
+def get_live_title(live_url):
+    html_data = requests.get(live_url)
+    parsed = bs4.BeautifulSoup(html_data.content, "html.parser")
+    return parsed.find('span', class_='watch-title metadata-updateable-title').text
+
+
 all_liver = Vtuber.objects.all()
 on_liver = On_Live.objects.all()
 
 uids = [liver.uid for liver in all_liver]
 on_livers = [liver.uid.uid for liver in on_liver]
 
-#on_liveに追加
 for uid in uids:
     status = live_status(uid)
     if status is not False and uid not in on_livers:
-        data = {'uid': uid, 'live_title': 'title', 'live_url': status}
+        title = get_live_title(status)
+        data = {'uid': uid, 'live_title': title, 'live_url': status}
+        #on_liveに追加
         res = vlsa.post(BASE_URL+'onlive', data)
     elif uid in on_livers:
         #on_liveから外す
