@@ -4,7 +4,7 @@ import requests, json
 def get(URL):
    return requests.get(URL).json()
 
-#post request with json data, return=status
+#post request with dict data, return=status
 def post(URL, data):
     pass
 
