@@ -15,7 +15,8 @@ def live_status(channelid):
     youtube_url = "https://www.youtube.com"
     channel_site_url = youtube_url + "/channel/"
     channel_site_url += channelid
-    html_data = requests.get(channel_site_url)
+    hed = {'Accept-Language': 'ja'}
+    html_data = requests.get(channel_site_url, headers=hed)
     parsed = bs4.BeautifulSoup(html_data.content, "html.parser")
 
     element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
@@ -34,17 +35,20 @@ def get_live_title(live_url):
     return parsed.find('span', class_='watch-title metadata-updateable-title').text
 
 
-all_liver = Vtuber.objects.all()
-on_liver = On_Live.objects.all()
+all_liver = vlsa.get(BASE_URL)
+on_liver = vlsa.get(BASE_URL + 'onlive/')
 
-uids = [liver.uid for liver in all_liver]
+uids = [liver['uid'] for liver in all_liver]
 if len(on_liver) != 0:
-    on_livers = [liver.uid.uid for liver in on_liver]
+    on_livers = [liver['uid']['uid'] for liver in on_liver]
 else:
     on_livers = []
 
+print(on_livers)
+
 for uid in tqdm(uids):
     status = live_status(uid)
+    print(status)
     if status is not False and uid not in on_livers:
         title = get_live_title(status)
         data = {'uid': uid, 'live_title': title, 'live_url': status}
