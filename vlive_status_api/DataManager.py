@@ -36,7 +36,8 @@ all_liver = Vtuber.objects.all()
 on_liver = On_Live.objects.all()
 
 uids = [liver.uid for liver in all_liver]
-on_livers = [liver.uid.uid for liver in on_liver]
+if len(on_liver) != 0:
+    on_livers = [liver.uid.uid for liver in on_liver]
 
 for uid in uids:
     status = live_status(uid)
