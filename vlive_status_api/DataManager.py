@@ -5,8 +5,10 @@ sys.path.append("api")
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vlive_status_api.settings')
 django.setup()
 from api.models import *
+from tqdm import tqdm
 
-BASE_URL = 'http://localhost:8000/api/'
+#BASE_URL = 'http://localhost:8000/api/' #local
+BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' #heroku
 
 #channel idを受け取って放送中の場合は配信場所のURL、そうでない場合はFalseを返す
 def live_status(channelid):
@@ -38,14 +40,16 @@ on_liver = On_Live.objects.all()
 uids = [liver.uid for liver in all_liver]
 if len(on_liver) != 0:
     on_livers = [liver.uid.uid for liver in on_liver]
+else:
+    on_livers = []
 
-for uid in uids:
+for uid in tqdm(uids):
     status = live_status(uid)
     if status is not False and uid not in on_livers:
         title = get_live_title(status)
         data = {'uid': uid, 'live_title': title, 'live_url': status}
         #on_liveに追加
         res = vlsa.post(BASE_URL+'onlive', data)
-    elif uid in on_livers:
+    elif status is False and uid in on_livers:
         #on_liveから外す
         res = vlsa.delete(BASE_URL+'onlive', uid)

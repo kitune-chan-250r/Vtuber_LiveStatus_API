@@ -5,9 +5,6 @@ sys.path.append("api")
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vlive_status_api.settings')
 django.setup()
 from api.models import *
-from selenium import webdriver
-import chromedriver_binary
-from selenium.webdriver.chrome.options import Options
 from tqdm import tqdm
 
 data = [
@@ -156,9 +153,10 @@ data = [
     'gender': 'woman'
 }]
 
-URL = 'http://localhost:8000/api/'
+#URL = 'http://localhost:8000/api/' #local
+URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' #heroku
 
-for d in data:
+for d in tqdm(data):
     err = vlsa.post(URL, d)
 
 
