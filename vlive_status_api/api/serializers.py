@@ -18,4 +18,4 @@ class OnLive_POST_Serializer(serializers.ModelSerializer):
     uid = serializers.PrimaryKeyRelatedField(queryset=Vtuber.objects.all())
     class Meta:
         model = On_Live
-        fields = ('uid', 'start_time', 'live_title')
+        fields = ('uid', 'start_time', 'live_title', 'live_url')
