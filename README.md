@@ -4,10 +4,10 @@
 # API URL
  https://vtuber-livestatus-api.herokuapp.com
 
- ・all vtuber 
+ ## all vtuber 
     /api/
- ・all on live vtuber
+ ## all on live vtuber
     /api/onlive/
 
-#option query
+## option query
     ?pr= (production) ex.ホロライブ, にじさんじ, upd8
