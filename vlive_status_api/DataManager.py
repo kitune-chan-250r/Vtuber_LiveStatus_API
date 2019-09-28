@@ -47,9 +47,8 @@ ll2 = uids[div:]
 def reqtask(uids):
     start = time.time()
     for uid in uids:
-        print(uid, status)
         status = live_status(uid)
-        #print(status, uid)
+        print(status, uid)
         if status is not False and uid not in on_livers:
             try:
                 title = get_live_title(status)
