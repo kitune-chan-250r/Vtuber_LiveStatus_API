@@ -46,11 +46,14 @@ else:
 
 print(on_livers)
 
-for uid in tqdm(uids):
+for uid in uids:
     status = live_status(uid)
-    print(status)
+    print(status, uid)
     if status is not False and uid not in on_livers:
-        title = get_live_title(status)
+        try:
+            title = get_live_title(status)
+        except AttributeError:
+            title = "取得失敗"
         data = {'uid': uid, 'live_title': title, 'live_url': status}
         #on_liveに追加
         res = vlsa.post(BASE_URL+'onlive', data)

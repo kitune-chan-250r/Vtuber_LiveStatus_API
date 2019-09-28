@@ -7,6 +7,7 @@ django.setup()
 from api.models import *
 from tqdm import tqdm
 
+
 '''
 url = "https://virtual-youtuber.userlocal.jp/office/cover" 
 html_data = requests.get(url)
