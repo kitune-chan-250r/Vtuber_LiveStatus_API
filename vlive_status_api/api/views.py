@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from .models import Vtuber, On_Live
 from .serializers import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 #filter 
 from rest_framework.filters import SearchFilter
@@ -16,6 +16,9 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status
+
+#token auth
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 """
@@ -37,11 +40,13 @@ def snippet_list(request):
 """
 
 class VtuberList(APIView):
+    
     def get(self, request, format=None):
         snippets = Vtuber.objects.all()
         serializer = VtuberSerializer(snippets, many=True)
         return Response(serializer.data)
 
+    
     def post(self, request, format=None):
         serializer = VtuberSerializer(data=request.data)
         if serializer.is_valid():
@@ -87,6 +92,7 @@ class OnLiveList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class OnLiveDetail(APIView):
+    
     def get_object(self, pk):
         try:
             return On_Live.objects.get(pk=pk)
@@ -116,7 +122,7 @@ class OnLiveDetail(APIView):
 class OnLiveListView(generics.ListCreateAPIView):
     queryset = On_Live.objects.all()
     serializer_class = OnLiveSerializer
-
+    permission_classes = (AllowAny, )
     def get_queryset(self):
         queryset = On_Live.objects.all()
         pr = self.request.query_params.get('pr', None)
