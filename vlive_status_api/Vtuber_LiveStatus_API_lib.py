@@ -1,6 +1,6 @@
 import requests, json, os
 
-TOKEN = "5d28a80b768e32eaa71a82ccdc41c8994bb8161f"#os.environ['TOKEN']
+TOKEN = os.environ['TOKEN']
 #heroku config:set --app TOKEN="5d28a80b768e32eaa71a82ccdc41c8994bb8161f"
 
 #auth
