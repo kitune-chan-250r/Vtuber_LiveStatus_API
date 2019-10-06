@@ -6,6 +6,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vlive_status_api.settings')
 django.setup()
 from api.models import *
 from tqdm import tqdm
+import threading
 
 #BASE_URL = 'http://localhost:8000/api/' #local
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' #heroku
@@ -38,16 +39,37 @@ if len(on_liver) != 0:
 else:
     on_livers = []
 
-print(on_livers)
+div = len(all_liver) // 2
 
-for uid in uids:
-    status = live_status(uid)
-    print(status, uid)
-    if status is not False and uid not in on_livers:
-        data = {'uid': uid, 'live_title': status['title'],
-             'live_url': 'https://www.youtube.com/watch?v='+status['watch']}
-        #on_liveに追加
-        res = vlsa.post(BASE_URL+'onlive', data)
-    elif status is False and uid in on_livers:
-        #on_liveから外す
-        res = vlsa.delete(BASE_URL+'onlive', uid)
+ll1 = uids[:div]
+ll2 = uids[div:]
+
+def reqtask(uids):
+    for uid in uids:
+        status = live_status(uid)
+        print(status, uid)
+        if status is not False and uid not in on_livers:
+            data = {'uid': uid, 'live_title': status['title'],
+                 'live_url': 'https://www.youtube.com/watch?v='+status['watch']}
+            #on_liveに追加
+            res = vlsa.post(BASE_URL+'onlive', data)
+
+        elif status is not False and uid in on_livers:
+            title = [l['live_title'] for l in on_liver if l['uid']['uid'] == uid]
+            print(title, status['title'])
+            if status['title'] != title[0]:
+                res = vlsa.delete(BASE_URL+'onlive', uid)
+                data = {'uid': uid, 'live_title': status['title'],
+                 'live_url': 'https://www.youtube.com/watch?v='+status['watch']}
+                res = vlsa.post(BASE_URL+'onlive', data)
+
+        elif status is False and uid in on_livers:
+            #on_liveから外す
+            res = vlsa.delete(BASE_URL+'onlive', uid)
+
+
+th1 = threading.Thread(target=reqtask, args=(ll1,))
+th2 = threading.Thread(target=reqtask, args=(ll2,))
+
+th1.start()
+th2.start()
