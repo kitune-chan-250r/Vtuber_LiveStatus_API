@@ -76,7 +76,6 @@ th2.start()
 
 #BASE_URL = 'http://localhost:8000/api/' #local
 
-st = time.time()
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' #heroku
 
@@ -141,7 +140,3 @@ th2 = threading.Thread(target=reqtask, args=(ll2,))
 
 th1.start()
 th2.start()
-
-end = time.time()
-
-print(st - end)
