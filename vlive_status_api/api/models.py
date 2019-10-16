@@ -16,16 +16,10 @@ class On_Live(models.Model):
     live_url = models.CharField(max_length=100)
 
 
-"""
-    GENDER = (('man', '男性'),
-              ('woman', '女性'),
-              ('etc', 'その他')
-              )
-    PRODUCTION = (('hololive', 'ホロライブ'),
-                  ('nijisanji','にじさんじ'),
-                  ('upd8','upd8'),
-                  ('dotlive','.Live'),
-                  ('react', 'Re:Act'),
-                  ('etc','その他')
-                  )
-"""
+class LiveLog(models.Model): 
+    time = models.DateTimeField(auto_now_add=True)
+    uid = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    gender = models.CharField(max_length=100)
+    production = models.CharField(max_length=100)
