@@ -1,8 +1,7 @@
 import requests, json, os
 
-#TOKEN = os.environ['TOKEN']
-#heroku config:set --app TOKEN="5d28a80b768e32eaa71a82ccdc41c8994bb8161f"
-TOKEN = "dm"
+TOKEN = os.environ['TOKEN']
+
 
 #auth
 headers={'Authorization': 'Token {}'.format(TOKEN)}
