@@ -21,32 +21,13 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
-"""
-@csrf_exempt
-def snippet_list(request):
-    if request.method == 'GET':
-        snippets = Vtuber.objects.all()
-        serializer = VtuberSerializer(snippets, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = VtuberSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-
-"""
-
 class VtuberList(APIView):
-    
     def get(self, request, format=None):
         snippets = Vtuber.objects.all()
         serializer = VtuberSerializer(snippets, many=True)
         return Response(serializer.data)
 
-    
+
     def post(self, request, format=None):
         serializer = VtuberSerializer(data=request.data)
         if serializer.is_valid():
@@ -55,28 +36,30 @@ class VtuberList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
-def snippet_detail(request, pk):
-    try:
-        snippet = Vtuber.objects.get(pk=pk)
-    except Vtuber.DoesNotExist:
-        return HttpResponse(status=404)
+class VtuberDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Vtuber.objects.get(pk=pk)
+        except Vtuber.DoesNotExist:
+            raise Http404
 
-    if request.method == 'GET':
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         serializer = VtuberSerializer(snippet)
-        return JsonResponse(serializer.data)
+        return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = VtuberSerializer(snippet, data=data)
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        serializer = VtuberSerializer(snippet, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         snippet.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OnLiveList(APIView):
     def get(self, request, format=None):
