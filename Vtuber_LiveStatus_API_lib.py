@@ -1,6 +1,6 @@
 import requests, json, os
 
-TOKEN = "163feb946049f9742fbf39ff0e5f463f79a9d0f7"#os.environ['TOKEN']
+TOKEN = os.environ['TOKEN']
 
 
 #auth
