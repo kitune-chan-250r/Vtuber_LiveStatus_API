@@ -4,7 +4,7 @@ from .models import Vtuber, On_Live
 class VtuberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vtuber
-        fields = ('uid', 'liver_name', 'production', 'gender', 'src')
+        fields = ('uid', 'liver_name', 'production', 'gender')#, 'src'
 
 
 class OnLiveSerializer(serializers.ModelSerializer):

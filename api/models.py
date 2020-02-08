@@ -7,7 +7,7 @@ class Vtuber(models.Model):
     liver_name = models.CharField(max_length=100)
     production = models.CharField(max_length=100)
     gender = models.CharField(max_length=20)
-    src = models.CharField(max_length=200, default='None')
+    #src = models.CharField(max_length=200, default='None')
 
 
 class On_Live(models.Model):
