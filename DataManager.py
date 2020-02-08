@@ -15,9 +15,10 @@ async def main(uid):
             parsed = BeautifulSoup(html, "html.parser")
             
             element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
-            element_2 = parsed.find_all("li", text=re.compile("人が視聴中"))
+            #element_2 = parsed.find_all("li", text=re.compile("人が視聴中"))
 
-            if len(element_1) > 0 and len(element_2) > 0:
+            #if len(element_1) > 0 and len(element_2) > 0:
+            if len(element_1) > 0:
                 watch = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").attrs['href']
                 title = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").text
                 result = {'watch': watch.replace('/watch?v=', ''), 'title': title, 'uid': uid, 'status': True}
