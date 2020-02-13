@@ -80,5 +80,5 @@ if len(on_liver) != 0:
 else:
     livers = []
 
-if len(on_livers) != 0 and len(livers) == 0:
+if len(on_livers) != 0 and len(livers) == 0 and len(on_livers) != 1:
     all_delete_bug_catch(parsed)
