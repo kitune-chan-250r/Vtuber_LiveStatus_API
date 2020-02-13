@@ -163,3 +163,67 @@ DATABASES['default'].update(db_from_env)
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+
+#logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(server_time)s] %(message)s a',
+        },
+        #プロジェクト用のフォーマットを追加
+        'heibon': {
+            'format': '\t'.join([
+                "[%(levelname)s]",
+                "%(asctime)s",
+                "%(name)s.%(funcName)s:%(lineno)s",
+                "%(message)s",
+            ])
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',   #コンソールの出力水準をDEBUGに下げる
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'heibon'   #フォーマッター追加
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        #自身のプロジェクトの設定を追加
+        'vlive_status_api.views': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    }
+}

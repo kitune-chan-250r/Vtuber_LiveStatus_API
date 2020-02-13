@@ -5,6 +5,9 @@ import re
 import Vtuber_LiveStatus_API_lib as vlsa
 from tqdm import tqdm
 
+from logging import getLogger
+
+parsed = ''
 
 async def main(uid):
     hed = {'Accept-Language': 'ja'}
@@ -24,6 +27,11 @@ async def main(uid):
             else:
                 result = {'uid': uid, 'status': False}
     return result
+
+logger = getLogger(__name__)
+#make error log
+def all_delete_bug_catch(parsed_html):
+    logger.error(parsed_html)
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
 
@@ -64,3 +72,13 @@ for r in tqdm(res):
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
+
+#連続してdeleteに入った場合
+on_liver = vlsa.get(BASE_URL + 'onlive/')
+if len(on_liver) != 0:
+    livers = [liver['uid']['uid'] for liver in on_liver]
+else:
+    livers = []
+
+if len(on_livers) != 0 and len(livers) == 0:
+    all_delete_bug_catch(parsed)
