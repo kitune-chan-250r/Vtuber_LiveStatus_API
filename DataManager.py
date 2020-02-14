@@ -5,8 +5,6 @@ import re
 import Vtuber_LiveStatus_API_lib as vlsa
 from tqdm import tqdm
 
-from logging import getLogger
-
 parsed = ''
 
 async def main(uid):
@@ -27,11 +25,6 @@ async def main(uid):
             else:
                 result = {'uid': uid, 'status': False}
     return result
-
-logger = getLogger(__name__)
-#make error log
-def all_delete_bug_catch(parsed_html):
-    logger.error(parsed_html)
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
 
@@ -80,5 +73,5 @@ if len(on_liver) != 0:
 else:
     livers = []
 
-if len(on_livers) != 0 and len(livers) == 0 and len(on_livers) != 1:
-    all_delete_bug_catch(parsed)
+if len(on_livers) != 0 and len(livers) == 0:
+    print('[EORROR] : all_delete ', parsed)
