@@ -69,7 +69,7 @@ for r in tqdm(res):
             res = vlsa.post(BASE_URL+'onlive', data)
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
-    elif r['status'] is False and r['uid'] in on_livers and not in 'robotflag':
+    elif r['status'] is False and r['uid'] in on_livers and 'robotflag' not in r:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
 
 
