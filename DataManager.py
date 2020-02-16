@@ -5,7 +5,6 @@ import re
 import Vtuber_LiveStatus_API_lib as vlsa
 from tqdm import tqdm
 
-parsed = ''
 
 async def main(uid):
     hed = {'Accept-Language': 'ja'}
@@ -18,10 +17,17 @@ async def main(uid):
             element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
             element_2 = parsed.find_all("li", text=re.compile("人が視聴中"))
 
+            element_robot_1 = parsed.find_all("b", text=re.compile("このページについて"))
+            element_robot_2 = parsed.find_all("a", text=re.compile("このページが表示された理由"))
+
             if len(element_1) > 0 and len(element_2) > 0:
                 watch = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").attrs['href']
                 title = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").text
                 result = {'watch': watch.replace('/watch?v=', ''), 'title': title, 'uid': uid, 'status': True}
+            
+            elif len(element_robot_1) > 0 and len(element_robot_2) > 0 and uid in on_livers: #botアクセス判定時にロボットフラグを付与してその時の結果を使用しない
+                result = {'uid': uid, 'status': False, 'robotflag': True}
+
             else:
                 result = {'uid': uid, 'status': False}
     return result
@@ -63,15 +69,7 @@ for r in tqdm(res):
             res = vlsa.post(BASE_URL+'onlive', data)
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
-    elif r['status'] is False and r['uid'] in on_livers:
+    elif r['status'] is False and r['uid'] in on_livers and not in 'robotflag':
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
 
-#連続してdeleteに入った場合
-on_liver = vlsa.get(BASE_URL + 'onlive/')
-if len(on_liver) != 0:
-    livers = [liver['uid']['uid'] for liver in on_liver]
-else:
-    livers = []
 
-if len(on_livers) != 0 and len(livers) == 0:
-    print('[EORROR] : all_delete ', parsed)
