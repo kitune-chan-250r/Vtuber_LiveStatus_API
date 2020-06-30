@@ -17,10 +17,18 @@ class On_Live(models.Model):
     live_url = models.CharField(max_length=100)
 
 
-class LiveLog(models.Model): 
+class LiveLog(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     uid = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     gender = models.CharField(max_length=100)
     production = models.CharField(max_length=100)
+
+
+class ScheduledLive(models.Model):
+    uid = models.ForeignKey(Vtuber, on_delete=models.CASCADE, primary_key=True, unique=True)
+    start_time = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    live_url = models.CharField(max_length=100)
+
