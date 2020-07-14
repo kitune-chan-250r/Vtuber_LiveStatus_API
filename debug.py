@@ -62,7 +62,7 @@ done,pending = loop.run_until_complete(
 
 res = [d.result() for d in done] #結果
 len(res)
-for r in tqdm(res):
+for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
     if r['status'] is not False and r['uid'] not in on_livers:
         data = {'uid': r['uid'], 'live_title': r['title'],
