@@ -2,6 +2,7 @@ import asyncio
 import aiohttp
 from bs4 import BeautifulSoup
 import re
+import Vtuber_LiveStatus_API_lib as vlsa
 
 async def main(uid):
     hed = {'Accept-Language': 'ja'}
