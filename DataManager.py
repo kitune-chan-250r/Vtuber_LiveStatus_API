@@ -106,7 +106,7 @@ async def main(uid):
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
 
-all_liver = vlsa.get(BASE_URL)
+all_liver = vlsa.get(BASE_URL + 'vtuber/')
 on_liver = vlsa.get(BASE_URL + 'onlive/')
 if len(on_liver) != 0:
     on_livers = [liver['uid']['uid'] for liver in on_liver]
