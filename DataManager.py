@@ -129,7 +129,7 @@ for r in res:
                 'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
         #on_liveに追加
         print(data)
-        res = vlsa.post(BASE_URL+'onlive', data)
+        res = vlsa.post(BASE_URL+'onlive/', data)
     
     #1つ前の更新で放送中で返ってきたステータスも放送中だがタイトルが変わっていた場合
     #短期間に2度続けて放送するライバーに対応するための処理
@@ -139,7 +139,7 @@ for r in res:
             res = vlsa.delete(BASE_URL+'onlive', r['uid'])
             data = {'uid': r['uid'], 'live_title': r['title'],
                     'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
-            res = vlsa.post(BASE_URL+'onlive', data)
+            res = vlsa.post(BASE_URL+'onlive/', data)
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
