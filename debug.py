@@ -32,9 +32,9 @@ async def main(uid):
                         break
 
                 stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-                                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
+                                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
                                         ['itemSectionRenderer']['contents'][0]\
-                                        ['shelfRenderer']['content']['expandedShelfContentsRenderer']['items'][0]\
+                                        ['channelFeaturedContentRenderer']['items'][0]\
                                         ['videoRenderer']
 
                 watch = stream_description['videoId']
