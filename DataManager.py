@@ -90,16 +90,19 @@ async def main(uid):
                         
                         dics = eval(dict_str)
                         break
+                try:
+                    stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+                                            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
+                                            ['itemSectionRenderer']['contents'][0]\
+                                            ['channelFeaturedContentRenderer']['items'][0]\
+                                            ['videoRenderer']
+                except KeyError:
+                    result = {'uid': uid, 'status': False}
 
-                stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-                                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
-                                        ['itemSectionRenderer']['contents'][0]\
-                                        ['channelFeaturedContentRenderer']['items'][0]\
-                                        ['videoRenderer']
-
-                watch = stream_description['videoId']
-                title = stream_description['title']['simpleText']
-                result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
+                else:
+                    watch = stream_description['videoId']
+                    title = stream_description['title']['simpleText']
+                    result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
             else:
                 result = {'uid': uid, 'status': False}
     return result
