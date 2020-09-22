@@ -8,6 +8,6 @@ class VtuberFrom(admin.ModelAdmin):
 admin.site.register(Vtuber, VtuberFrom)
 
 class On_liveFrom(admin.ModelAdmin):
-	fields = ['uid', 'live_title', 'viewer']
+	fields = ['uid', 'live_title']
 
 admin.site.register(On_Live, On_liveFrom)

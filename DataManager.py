@@ -129,8 +129,7 @@ for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
     if r['status'] is not False and r['uid'] not in on_livers:
         data = {'uid': r['uid'], 'live_title': r['title'],
-                'live_url': 'https://www.youtube.com/watch?v='+r['watch'],
-                'viewer': r['viewer']}
+                'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
         #on_liveに追加
         print(data)
         res = vlsa.post(BASE_URL+'onlive', data)
