@@ -3,11 +3,11 @@ from .models import Vtuber, On_Live
 
 # Register your models here.
 class VtuberFrom(admin.ModelAdmin):
-	fields = ['uid', 'liver_name', 'production', 'gender', 'src']
+	fields = ['uid', 'liver_name', 'production', 'gender']#, 'src'
 
 admin.site.register(Vtuber, VtuberFrom)
 
 class On_liveFrom(admin.ModelAdmin):
-	fields = ['uid', 'live_title']
+	fields = ['uid', 'live_title', 'viewer']
 
 admin.site.register(On_Live, On_liveFrom)
