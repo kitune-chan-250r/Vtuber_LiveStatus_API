@@ -31,6 +31,7 @@ from tqdm import tqdm
             html = await response.text()
             parsed = BeautifulSoup(html, "html.parser")
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -53,8 +54,14 @@ from tqdm import tqdm
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
+
+>>>>>>> Stashed changes
             element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
             element_2 = parsed.find_all("li", text=re.compile("人が視聴中"))
+
+            #枠取り判定
+            tmp_span = parsed.find('span', class_='branded-page-module-title-text')
 
             #枠取り判定
             tmp_span = parsed.find('span', class_='branded-page-module-title-text')
@@ -64,7 +71,10 @@ from tqdm import tqdm
                 title = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").text
                 result = {'watch': watch.replace('/watch?v=', ''), 'title': title, 'uid': uid, 'status': True}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 
             elif len(element_robot_1) > 0 and len(element_robot_2) > 0 and uid in on_livers: #botアクセス判定時にロボットフラグを付与してその時の結果を使用しない
                 result = {'uid': uid, 'status': False, 'robotflag': True}
@@ -75,6 +85,11 @@ from tqdm import tqdm
 
                 remind_title = lockup.find('a').attrs['title']
                 remind_starttime = lockup.find('span', class_='yt-badge localized-date').attrs['data-timestamp']
+<<<<<<< Updated upstream
+=======
+
+                result = {'title':remind_title, 'starttime':remind_starttime}
+>>>>>>> Stashed changes
 
                 result = {'title':remind_title, 'starttime':remind_starttime}
 
@@ -109,6 +124,7 @@ for r in tqdm(res):
         print(data)
         res = vlsa.post(BASE_URL+'onlive', data)
 
+<<<<<<< Updated upstream
     #1つ前の更新で放送中で返ってきたステータスも放送中だがタイトルが変わっていた場合
     #短期間に2度続けて放送するライバーに対応するための処理
     elif r['status'] is not False and r['uid'] in on_livers:
@@ -249,6 +265,8 @@ for r in res:
         res = vlsa.post(BASE_URL+'onlive', data)
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
     
+=======
+>>>>>>> Stashed changes
     #1つ前の更新で放送中で返ってきたステータスも放送中だがタイトルが変わっていた場合
     #短期間に2度続けて放送するライバーに対応するための処理
     elif r['status'] is not False and r['uid'] in on_livers:
@@ -271,7 +289,7 @@ for r in res:
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
             res = vlsa.post(BASE_URL+'onlive', data)
-    
+
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])

@@ -3,18 +3,25 @@ import aiohttp
 from bs4 import BeautifulSoup
 import re
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import Vtuber_LiveStatus_API_lib as vlsa
 =======
+=======
+>>>>>>> Stashed changes
 from tqdm import tqdm
 import requests
 import requests_html as rh
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 async def main(uid):
     hed = {'Accept-Language': 'ja'}
     url = "https://www.youtube.com/channel/" + uid
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     async with aiohttp.ClientSession(headers=hed) as session:
         async with session.get(url) as response:
@@ -55,6 +62,8 @@ async def main(uid):
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
 =======
+=======
+>>>>>>> Stashed changes
     asysession = rh.AsyncHTMLSession()
 
     asysession.headers.update(hed)
@@ -72,6 +81,9 @@ BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
     return result
 
 #uids = ["UCSFCh5NL4qXrAy9u-u2lX3g", "UCqm3BQLlJfvkTsX_hvm0UmA"]
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 all_liver = vlsa.get(BASE_URL)
@@ -84,6 +96,7 @@ else:
 uids = [liver['uid'] for liver in all_liver]
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 loop = asyncio.get_event_loop()
 done,pending = loop.run_until_complete(
@@ -93,6 +106,8 @@ res = [d.result() for d in done] #結果
 len(res)
 for r in res:
 =======
+=======
+>>>>>>> Stashed changes
 loop = asyncio.get_event_loop()
 done,pending = loop.run_until_complete(
     asyncio.wait([main(uid) for uid in tqdm(uids)]))
@@ -101,6 +116,9 @@ res = [d.result() for d in done]
 
 len(res)
 for r in tqdm(res):
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
     if r['status'] is not False and r['uid'] not in on_livers:
@@ -110,7 +128,11 @@ for r in tqdm(res):
         print(data)
         res = vlsa.post(BASE_URL+'onlive', data)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -124,11 +146,14 @@ for r in tqdm(res):
                     'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
             res = vlsa.post(BASE_URL+'onlive', data)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
 =======
+=======
+>>>>>>> Stashed changes
 
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
@@ -140,5 +165,9 @@ r = session.get('https://www.youtube.com/channel/UCSFCh5NL4qXrAy9u-u2lX3g')
 r.html.render()
 element = r.html.find('a.yt-simple-endpoint.style-scope.ytd-video-renderer')[0].attrs
 
+<<<<<<< Updated upstream
+print(element)'''
+>>>>>>> Stashed changes
+=======
 print(element)'''
 >>>>>>> Stashed changes

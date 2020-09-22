@@ -23,6 +23,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 class VtuberList(APIView):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -32,7 +36,10 @@ class VtuberList(APIView):
         return Response(serializer.data)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     def post(self, request, format=None):
@@ -108,9 +115,12 @@ class OnLiveDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     def post(self, request, format=None):
         serializer = OnLive_POST_Serializer(data=request.data)
 =======
+=======
+>>>>>>> Stashed changes
 # ScheduledLive
 class ScheduledLiveList(APIView):
     def get(self, request, format=None):
@@ -120,6 +130,9 @@ class ScheduledLiveList(APIView):
 
     def post(self, request, format=None):
         serializer = ScheduledLive_POST_Serializer(data=request.data)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         if serializer.is_valid():
             serializer.save()
@@ -127,7 +140,10 @@ class ScheduledLiveList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 class ScheduledLiveDetail(APIView):
 
     def get_object(self, pk):
@@ -153,6 +169,9 @@ class ScheduledLiveDetail(APIView):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 #?pr=[production name]で検索可能に

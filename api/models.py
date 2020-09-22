@@ -27,7 +27,11 @@ class LiveLog(models.Model):
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 '''class ScheduledLive(models.Model):
+=======
+class ScheduledLive(models.Model):
+>>>>>>> Stashed changes
 =======
 class ScheduledLive(models.Model):
 >>>>>>> Stashed changes
@@ -36,7 +40,11 @@ class ScheduledLive(models.Model):
     title = models.CharField(max_length=100)
     live_url = models.CharField(max_length=100)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 '''
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes

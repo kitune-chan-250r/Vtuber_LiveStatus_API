@@ -9,8 +9,13 @@ urlpatterns = [
     path('api/onlive/<str:pk>/', OnLiveDetail.as_view()),
     path('api/onlive/', OnLiveListView.as_view()),
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     #path('api/scheduledlive/', ScheduledLiveListView.as_view()),
     #path('api/scheduledlive/<str:pk>/', ScheduledLiveDetail.as_view())
+=======
+    path('api/scheduledlive/', ScheduledLiveListView.as_view()),
+    path('api/scheduledlive/<str:pk>/', ScheduledLiveDetail.as_view())
+>>>>>>> Stashed changes
 =======
     path('api/scheduledlive/', ScheduledLiveListView.as_view()),
     path('api/scheduledlive/<str:pk>/', ScheduledLiveDetail.as_view())

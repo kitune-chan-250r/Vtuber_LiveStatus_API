@@ -19,8 +19,11 @@ class OnLive_POST_Serializer(serializers.ModelSerializer):
     class Meta:
         model = On_Live
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         fields = ('uid', 'live_title', 'live_url')#, 'start_time'
 =======
+=======
+>>>>>>> Stashed changes
         fields = ('uid', 'start_time', 'live_title', 'live_url')
 
 
@@ -35,4 +38,7 @@ class ScheduledLive_POST_Serializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduledLive
         fields = ('uid', 'title', 'start_time', 'live_url')
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
