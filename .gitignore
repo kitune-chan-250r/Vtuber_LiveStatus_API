@@ -1,0 +1,16 @@
+
+.DS_Store
+*.pyc
+vlive_status_api/db.sqlite3
+*.pyc
+vlive_status_api/api/__pycache__/serializers.cpython-36.pyc
+vlive_status_api/api/__pycache__/urls.cpython-36.pyc
+vlive_status_api/vlive_status_api/__pycache__/urls.cpython-36.pyc
+vlive_status_api/vlive_status_api/__pycache__/wsgi.cpython-36.pyc
+vlive_status_api/api/migrations/__pycache__/__init__.cpython-36.pyc
+vlive_status_api/api/migrations/__pycache__/0003_auto_20190925_2318.cpython-36.pyc
+vlive_status_api/api/migrations/__pycache__/0002_auto_20190925_0414.cpython-36.pyc
+vlive_status_api/api/migrations/__pycache__/0001_initial.cpython-36.pyc
+vlive_status_api/api/__pycache__/views.cpython-36.pyc
+vlive_status_api/api/__pycache__/urls.cpython-36.pyc
+vlive_status_api/api/__pycache__/serializers.cpython-36.pyc
