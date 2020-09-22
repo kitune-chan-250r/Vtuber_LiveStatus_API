@@ -5,9 +5,12 @@ import re
 import Vtuber_LiveStatus_API_lib as vlsa
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 async def main(uid):
 =======
+=======
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 from tqdm import tqdm
@@ -15,6 +18,9 @@ from tqdm import tqdm
 #before update
 """async def main(uid):
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
@@ -25,6 +31,7 @@ from tqdm import tqdm
             html = await response.text()
             parsed = BeautifulSoup(html, "html.parser")
             
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD:DataManager.py
@@ -38,6 +45,8 @@ from tqdm import tqdm
                 result = {'watch': watch.replace('/watch?v=', ''), 'title': title, 'uid': uid, 'status': True}
 =======
 =======
+=======
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
             element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
@@ -99,6 +108,9 @@ async def main(uid):
             parsed = BeautifulSoup(html, "html.parser")
             
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
@@ -122,6 +134,7 @@ async def main(uid):
                         break
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
                                         ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
@@ -134,6 +147,8 @@ async def main(uid):
                 result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64:debug.py
 =======
+=======
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
                 try:
@@ -150,6 +165,9 @@ async def main(uid):
                     title = stream_description['title']['simpleText']
                     result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
@@ -161,7 +179,11 @@ BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 all_liver = vlsa.get(BASE_URL)
+=======
+all_liver = vlsa.get(BASE_URL + 'vtuber/')
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 all_liver = vlsa.get(BASE_URL + 'vtuber/')
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
@@ -192,7 +214,11 @@ for r in res:
         print(data)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         res = vlsa.post(BASE_URL+'onlive/', data)
+=======
+        res = vlsa.post(BASE_URL+'onlive', data)
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
         res = vlsa.post(BASE_URL+'onlive', data)
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
@@ -210,6 +236,7 @@ for r in res:
                     'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             res = vlsa.post(BASE_URL+'onlive/', data)
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
@@ -218,12 +245,17 @@ for r in res:
 =======
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
             res = vlsa.post(BASE_URL+'onlive', data)
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64

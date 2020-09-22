@@ -20,7 +20,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     path('', include('api.urls')),
+=======
+    path('api/', include('api.urls')),
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
     path('api/', include('api.urls')),
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64

@@ -40,8 +40,11 @@ def live_status(channelid):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 live_status(uid)
 =======
+=======
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 live_status(uid)
@@ -156,6 +159,10 @@ stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][
 watch = stream_description['videoId']
 title = stream_description['title']['simpleText']
 <<<<<<< HEAD
+<<<<<<< HEAD
+print(title)
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
+=======
 print(title)
 >>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======

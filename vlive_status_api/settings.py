@@ -28,8 +28,14 @@ DEBUG = True
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ALLOWED_HOSTS = []
 
+=======
+ALLOWED_HOSTS = ['*']
+
+APPEND_SLASH = False
+>>>>>>> 20c8280a21be53bfe5e9e019518dd8a5eb9dbb64
 =======
 ALLOWED_HOSTS = ['*']
 
