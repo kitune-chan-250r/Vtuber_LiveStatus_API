@@ -26,9 +26,9 @@ class LiveLog(models.Model):
     production = models.CharField(max_length=100)
 
 
-class ScheduledLive(models.Model):
+'''class ScheduledLive(models.Model):
     uid = models.ForeignKey(Vtuber, on_delete=models.CASCADE, primary_key=True, unique=True)
     start_time = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     live_url = models.CharField(max_length=100)
-
+'''
