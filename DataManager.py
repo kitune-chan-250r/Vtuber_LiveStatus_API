@@ -129,7 +129,8 @@ for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
     if r['status'] is not False and r['uid'] not in on_livers:
         data = {'uid': r['uid'], 'live_title': r['title'],
-                'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
+                'live_url': 'https://www.youtube.com/watch?v='+r['watch'],
+                'viewer': r['viewer']}
         #on_liveに追加
         print(data)
         res = vlsa.post(BASE_URL+'onlive', data)
@@ -147,3 +148,4 @@ for r in res:
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
+
