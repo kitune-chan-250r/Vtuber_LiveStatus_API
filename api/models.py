@@ -15,7 +15,6 @@ class On_Live(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     live_title = models.CharField(max_length=100)
     live_url = models.CharField(max_length=100)
-    #viewer = models.IntegerField(default=0)
 
 
 class LiveLog(models.Model): 
