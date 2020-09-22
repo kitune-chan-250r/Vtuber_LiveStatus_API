@@ -8,8 +8,13 @@ urlpatterns = [
     path('api/onlive', OnLiveList.as_view()),#onlive 全件取得
     path('api/onlive/<str:pk>/', OnLiveDetail.as_view()),
     path('api/onlive/', OnLiveListView.as_view()),
+<<<<<<< Updated upstream
     #path('api/scheduledlive/', ScheduledLiveListView.as_view()),
     #path('api/scheduledlive/<str:pk>/', ScheduledLiveDetail.as_view())
+=======
+    path('api/scheduledlive/', ScheduledLiveListView.as_view()),
+    path('api/scheduledlive/<str:pk>/', ScheduledLiveDetail.as_view())
+>>>>>>> Stashed changes
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

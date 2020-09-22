@@ -30,11 +30,15 @@ from tqdm import tqdm
         async with session.get(url) as response:
             html = await response.text()
             parsed = BeautifulSoup(html, "html.parser")
+<<<<<<< Updated upstream
             
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD:DataManager.py
+=======
+
+>>>>>>> Stashed changes
             element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
             #element_2 = parsed.find_all("li", text=re.compile("人が視聴中"))
 
@@ -52,15 +56,34 @@ from tqdm import tqdm
             element_1 = parsed.find_all("li", text=re.compile("ライブ配信中"))
             element_2 = parsed.find_all("li", text=re.compile("人が視聴中"))
 
+            #枠取り判定
+            tmp_span = parsed.find('span', class_='branded-page-module-title-text')
+
             if len(element_1) > 0 and len(element_2) > 0:
                 watch = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").attrs['href']
                 title = parsed.find("a", class_="yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2").text
                 result = {'watch': watch.replace('/watch?v=', ''), 'title': title, 'uid': uid, 'status': True}
+<<<<<<< Updated upstream
+=======
+
+            elif len(element_robot_1) > 0 and len(element_robot_2) > 0 and uid in on_livers: #botアクセス判定時にロボットフラグを付与してその時の結果を使用しない
+                result = {'uid': uid, 'status': False, 'robotflag': True}
+            #枠取り判定
+            elif tmp_span.span.contents[0] == '今後のライブ ストリーム':
+                p = parsed.find('div', class_='shelf-wrapper clearfix')
+                lockup = p.find('div', class_='yt-lockup-content')
+
+                remind_title = lockup.find('a').attrs['title']
+                remind_starttime = lockup.find('span', class_='yt-badge localized-date').attrs['data-timestamp']
+
+                result = {'title':remind_title, 'starttime':remind_starttime}
+
+>>>>>>> Stashed changes
             else:
                 result = {'uid': uid, 'status': False}
     return result
 
-BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
+BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
 
 all_liver = vlsa.get(BASE_URL)
 on_liver = vlsa.get(BASE_URL + 'onlive/')
@@ -85,7 +108,7 @@ for r in tqdm(res):
         #on_liveに追加
         print(data)
         res = vlsa.post(BASE_URL+'onlive', data)
-    
+
     #1つ前の更新で放送中で返ってきたステータスも放送中だがタイトルが変わっていた場合
     #短期間に2度続けて放送するライバーに対応するための処理
     elif r['status'] is not False and r['uid'] in on_livers:
@@ -95,7 +118,7 @@ for r in tqdm(res):
             data = {'uid': r['uid'], 'live_title': r['title'],
                     'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
             res = vlsa.post(BASE_URL+'onlive', data)
-    
+
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
     elif r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])"""

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vtuber, On_Live
+from .models import Vtuber, On_Live, ScheduledLive
 
 class VtuberSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,4 +18,21 @@ class OnLive_POST_Serializer(serializers.ModelSerializer):
     uid = serializers.PrimaryKeyRelatedField(queryset=Vtuber.objects.all())
     class Meta:
         model = On_Live
+<<<<<<< Updated upstream
         fields = ('uid', 'live_title', 'live_url')#, 'start_time'
+=======
+        fields = ('uid', 'start_time', 'live_title', 'live_url')
+
+
+class ScheduledLiveSerializer(serializers.ModelSerializer):
+    uid = VtuberSerializer()
+    class Meta:
+        model = ScheduledLive
+        fields = ('uid', 'title', 'start_time', 'live_url')
+
+class ScheduledLive_POST_Serializer(serializers.ModelSerializer):
+    uid = serializers.PrimaryKeyRelatedField(queryset=Vtuber.objects.all())
+    class Meta:
+        model = ScheduledLive
+        fields = ('uid', 'title', 'start_time', 'live_url')
+>>>>>>> Stashed changes
