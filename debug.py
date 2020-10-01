@@ -2,7 +2,13 @@ import asyncio
 import aiohttp
 from bs4 import BeautifulSoup
 import re
-import Vtuber_LiveStatus_API_lib as vlsa
+from tqdm import tqdm
+import requests
+
+def get(URL):
+   return requests.get(URL).json()
+
+
 
 async def main(uid):
     hed = {'Accept-Language': 'ja'}
@@ -30,24 +36,28 @@ async def main(uid):
                         
                         dics = eval(dict_str)
                         break
+                try:
+                    stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+                                            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
+                                            ['itemSectionRenderer']['contents'][0]\
+                                            ['channelFeaturedContentRenderer']['items'][0]\
+                                            ['videoRenderer']
+                except KeyError:
+                    result = {'uid': uid, 'status': False}
 
-                stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-                                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
-                                        ['itemSectionRenderer']['contents'][0]\
-                                        ['channelFeaturedContentRenderer']['items'][0]\
-                                        ['videoRenderer']
-
-                watch = stream_description['videoId']
-                title = stream_description['title']['simpleText']
-                result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
+                else:
+                    watch = stream_description['videoId']
+                    title = stream_description['title']['simpleText']
+                    print(title)
+                    result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
             else:
                 result = {'uid': uid, 'status': False}
     return result
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
 
-all_liver = vlsa.get(BASE_URL)
-on_liver = vlsa.get(BASE_URL + 'onlive/')
+all_liver = get(BASE_URL + 'vtuber/')
+on_liver = get(BASE_URL + 'onlive/')
 if len(on_liver) != 0:
     on_livers = [liver['uid']['uid'] for liver in on_liver]
 else:
@@ -62,25 +72,4 @@ done,pending = loop.run_until_complete(
 
 res = [d.result() for d in done] #結果
 len(res)
-for r in res:
-    #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
-    if r['status'] is not False and r['uid'] not in on_livers:
-        data = {'uid': r['uid'], 'live_title': r['title'],
-                'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
-        #on_liveに追加
-        print(data)
-        res = vlsa.post(BASE_URL+'onlive', data)
-    
-    #1つ前の更新で放送中で返ってきたステータスも放送中だがタイトルが変わっていた場合
-    #短期間に2度続けて放送するライバーに対応するための処理
-    elif r['status'] is not False and r['uid'] in on_livers:
-        title = [l['live_title'] for l in on_liver if l['uid']['uid'] == r['uid']]
-        if r['title'] != title[0]:
-            res = vlsa.delete(BASE_URL+'onlive', r['uid'])
-            data = {'uid': r['uid'], 'live_title': r['title'],
-                    'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
-            res = vlsa.post(BASE_URL+'onlive', data)
-    
-    #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
-    elif r['status'] is False and r['uid'] in on_livers:
-        res = vlsa.delete(BASE_URL+'onlive', r['uid'])
+
