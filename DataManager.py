@@ -101,7 +101,13 @@ async def main(uid):
 
                 else:
                     watch = stream_description['videoId']
-                    title = stream_description['title']['simpleText']
+                    
+                    
+                    try:
+                        title = stream_description['title']['simpleText']
+                    except KeyError:
+                        title = "データ取得失敗 KeyError: stream_description['title']['simpleText']"
+
                     result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
             else:
                 result = {'uid': uid, 'status': False}
