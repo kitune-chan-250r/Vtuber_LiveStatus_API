@@ -14,7 +14,7 @@ res = requests.post(url, data, headers=headers)
 
 print(res)'''
 
-uid = 'UCL34fAoFim9oHLbVzMKFavQ'
+uid = 'UCSFCh5NL4qXrAy9u-u2lX3g'
 
 #import Vtuber_LiveStatus_API_lib as vlsa
 import requests, bs4, re, sys, os, time
@@ -141,11 +141,10 @@ for scrp in parsed.find_all("script"):
         break
 
 stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
+                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
                         ['itemSectionRenderer']['contents'][0]\
-                        ['shelfRenderer']['content']['expandedShelfContentsRenderer']['items'][0]\
-                        ['videoRenderer']
+                        ['channelFeaturedContentRenderer']['items'][0]['videoRenderer']
 
 watch = stream_description['videoId']
-title = stream_description['title']['simpleText']
-print(title)
+title = stream_description['title']['runs'][0]['text']
+print(watch)
