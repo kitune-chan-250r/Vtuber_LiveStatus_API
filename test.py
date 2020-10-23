@@ -114,7 +114,6 @@ url = 'https://www.youtube.com/channel/UCSFCh5NL4qXrAy9u-u2lX3g'
 res = requests.get(url).text
 parsed = BeautifulSoup(res, "html.parser") #配信中２７
 
-import dukpy
 
 script1 = parsed.find_all('script', text=re.compile("ライブ配信中"))
 script2 = parsed.find_all('script', text=re.compile("人が視聴中"))
