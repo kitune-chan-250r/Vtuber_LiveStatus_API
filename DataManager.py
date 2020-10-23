@@ -91,11 +91,16 @@ async def main(uid):
                         dics = eval(dict_str)
                         break
                 try:
+                    '''2020-10-23 changed
                     stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
                                             ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
                                             ['itemSectionRenderer']['contents'][0]\
                                             ['channelFeaturedContentRenderer']['items'][0]\
-                                            ['videoRenderer']
+                                            ['videoRenderer']'''
+                    stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+                                            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
+                                            ['itemSectionRenderer']['contents'][0]\
+                                            ['channelFeaturedContentRenderer']['items'][0]['videoRenderer']
                 except KeyError:
                     result = {'uid': uid, 'status': False}
 
@@ -104,7 +109,8 @@ async def main(uid):
                     
                     
                     try:
-                        title = stream_description['title']['simpleText']
+                        #title = stream_description['title']['simpleText']
+                        title = stream_description['title']['runs'][0]['text']
                     except KeyError:
                         title = "データ取得失敗 KeyError: stream_description['title']['simpleText']"
 
