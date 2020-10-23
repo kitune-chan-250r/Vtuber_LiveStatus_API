@@ -35,7 +35,7 @@ def live_status(channelid):
     hed = {'Accept-Language': 'ja'}
     html_data = requests.get(channel_site_url, headers=hed)
     parsed = bs4.BeautifulSoup(html_data.content, "html.parser")
-    print(parsed)
+    #print(parsed)
 
 
 live_status(uid)
@@ -110,7 +110,7 @@ for uid in uids:
 
 """
 
-url = 'https://www.youtube.com/channel/UCBV3t0VQ7rprxj1oRfgKWZQ'
+url = 'https://www.youtube.com/channel/UCSFCh5NL4qXrAy9u-u2lX3g'
 res = requests.get(url).text
 parsed = BeautifulSoup(res, "html.parser") #配信中２７
 
