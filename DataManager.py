@@ -72,10 +72,10 @@ async def main(uid):
             html = await response.text()
             parsed = BeautifulSoup(html, "html.parser")
             
-            element_1 = parsed.find_all('script', text=re.compile("ライブ配信中"))
+            #element_1 = parsed.find_all('script', text=re.compile("ライブ配信中"))len(element_1) > 0 and 
             element_2 = parsed.find_all('script', text=re.compile("人が視聴中"))
 
-            if len(element_1) > 0 and len(element_2) > 0:
+            if len(element_2) > 0:
                 for scrp in parsed.find_all("script"):
                     if "var ytInitialData" in scrp.text:
                         dict_str = scrp.text.split(" = ")[1]

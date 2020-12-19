@@ -110,7 +110,7 @@ for uid in uids:
 
 """
 
-url = 'https://www.youtube.com/channel/UC6oDys1BGgBsIC3WhG1BovQ'
+url = 'https://www.youtube.com/channel/UC7fk0CB07ly8oSl0aqKkqFg'
 res = requests.get(url).text
 parsed = BeautifulSoup(res, "html.parser") #配信中２７
 
