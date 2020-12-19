@@ -110,7 +110,7 @@ for uid in uids:
 
 """
 
-url = 'https://www.youtube.com/channel/UCSFCh5NL4qXrAy9u-u2lX3g'
+url = 'https://www.youtube.com/channel/UC6oDys1BGgBsIC3WhG1BovQ'
 res = requests.get(url).text
 parsed = BeautifulSoup(res, "html.parser") #配信中２７
 
@@ -118,13 +118,10 @@ parsed = BeautifulSoup(res, "html.parser") #配信中２７
 script1 = parsed.find_all('script', text=re.compile("ライブ配信中"))
 script2 = parsed.find_all('script', text=re.compile("人が視聴中"))
 
-#print(len(script2))
-
-#
-
+#print(len(script1))
 
 for scrp in parsed.find_all("script"):
-    if "window[\"ytInitialData\"]" in scrp.text:
+    if "var ytInitialData" in scrp.text:
         dict_str = scrp.text.split(" = ")[1]
 
         # javascript表記なので更に整形. falseとtrueの表記を直す
@@ -147,4 +144,4 @@ stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][
 
 watch = stream_description['videoId']
 title = stream_description['title']['runs'][0]['text']
-print(watch)
+print(title)

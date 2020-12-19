@@ -77,7 +77,7 @@ async def main(uid):
 
             if len(element_1) > 0 and len(element_2) > 0:
                 for scrp in parsed.find_all("script"):
-                    if "window[\"ytInitialData\"]" in scrp.text:
+                    if "var ytInitialData" in scrp.text:
                         dict_str = scrp.text.split(" = ")[1]
 
                         dict_str = dict_str.replace("false","False")
