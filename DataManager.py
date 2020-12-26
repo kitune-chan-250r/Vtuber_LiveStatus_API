@@ -72,12 +72,12 @@ async def main(uid):
             html = await response.text()
             parsed = BeautifulSoup(html, "html.parser")
             
-            element_1 = parsed.find_all('script', text=re.compile("ライブ配信中"))
+            #element_1 = parsed.find_all('script', text=re.compile("ライブ配信中"))len(element_1) > 0 and 
             element_2 = parsed.find_all('script', text=re.compile("人が視聴中"))
 
-            if len(element_1) > 0 and len(element_2) > 0:
+            if len(element_2) > 0:
                 for scrp in parsed.find_all("script"):
-                    if "window[\"ytInitialData\"]" in scrp.text:
+                    if "var ytInitialData" in scrp.text:
                         dict_str = scrp.text.split(" = ")[1]
 
                         dict_str = dict_str.replace("false","False")
@@ -91,17 +91,29 @@ async def main(uid):
                         dics = eval(dict_str)
                         break
                 try:
+                    '''2020-10-23 changed
                     stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
                                             ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
                                             ['itemSectionRenderer']['contents'][0]\
                                             ['channelFeaturedContentRenderer']['items'][0]\
-                                            ['videoRenderer']
+                                            ['videoRenderer']'''
+                    stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+                                            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
+                                            ['itemSectionRenderer']['contents'][0]\
+                                            ['channelFeaturedContentRenderer']['items'][0]['videoRenderer']
                 except KeyError:
                     result = {'uid': uid, 'status': False}
 
                 else:
                     watch = stream_description['videoId']
-                    title = stream_description['title']['simpleText']
+                    
+                    
+                    try:
+                        #title = stream_description['title']['simpleText']
+                        title = stream_description['title']['runs'][0]['text']
+                    except KeyError:
+                        title = "データ取得失敗 KeyError: stream_description['title']['simpleText']"
+
                     result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
             else:
                 result = {'uid': uid, 'status': False}

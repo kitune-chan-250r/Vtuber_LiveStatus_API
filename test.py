@@ -14,7 +14,7 @@ res = requests.post(url, data, headers=headers)
 
 print(res)'''
 
-uid = 'UCL34fAoFim9oHLbVzMKFavQ'
+uid = 'UCSFCh5NL4qXrAy9u-u2lX3g'
 
 #import Vtuber_LiveStatus_API_lib as vlsa
 import requests, bs4, re, sys, os, time
@@ -35,7 +35,7 @@ def live_status(channelid):
     hed = {'Accept-Language': 'ja'}
     html_data = requests.get(channel_site_url, headers=hed)
     parsed = bs4.BeautifulSoup(html_data.content, "html.parser")
-    print(parsed)
+    #print(parsed)
 
 
 live_status(uid)
@@ -110,43 +110,76 @@ for uid in uids:
 
 """
 
-url = 'https://www.youtube.com/channel/UCBV3t0VQ7rprxj1oRfgKWZQ'
+url = 'https://www.youtube.com/channel/UCL34fAoFim9oHLbVzMKFavQ'
 res = requests.get(url).text
 parsed = BeautifulSoup(res, "html.parser") #配信中２７
 
-import dukpy
 
-script1 = parsed.find_all('script', text=re.compile("ライブ配信中"))
+#script1 = parsed.find_all('script', text=re.compile("ライブ配信中"))
 script2 = parsed.find_all('script', text=re.compile("人が視聴中"))
+remind = parsed.find_all('script', text=re.compile("今後のライブ ストリーム"))
 
-#print(len(script2))
+#print(len(script1))
+if len(script2) > 0:
+	for scrp in parsed.find_all("script"):
+	    if "var ytInitialData" in scrp.text:
+	        dict_str = scrp.text.split(" = ")[1]
 
-#
+	        # javascript表記なので更に整形. falseとtrueの表記を直す
+	        dict_str = dict_str.replace("false","False")
+	        dict_str = dict_str.replace("true","True")
 
+	        # 辞書形式と認識すると簡単にデータを取得できるが, 末尾に邪魔なのがあるので消しておく（「空白2つ + \n + ;」を消す）
+	        dict_str = dict_str.rstrip("  \n;")
 
-for scrp in parsed.find_all("script"):
-    if "window[\"ytInitialData\"]" in scrp.text:
-        dict_str = scrp.text.split(" = ")[1]
+	        dict_str = dict_str.replace('    window["ytInitialPlayerResponse"]', '')
+	        dict_str = dict_str.replace(";", "")
+	        # 辞書形式に変換
+	        dics = eval(dict_str)
+	        break
 
-        # javascript表記なので更に整形. falseとtrueの表記を直す
-        dict_str = dict_str.replace("false","False")
-        dict_str = dict_str.replace("true","True")
+	stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+	                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
+	                        ['itemSectionRenderer']['contents'][0]\
+	                        ['channelFeaturedContentRenderer']['items'][0]['videoRenderer']
 
-        # 辞書形式と認識すると簡単にデータを取得できるが, 末尾に邪魔なのがあるので消しておく（「空白2つ + \n + ;」を消す）
-        dict_str = dict_str.rstrip("  \n;")
+	watch = stream_description['videoId']
+	title = stream_description['title']['runs'][0]['text']
+	print(title)
+elif len(remind) > 0:
+	for scrp in parsed.find_all("script"):
+	    if "var ytInitialData" in scrp.text:
+	        dict_str = scrp.text.split(" = ")[1]
 
-        dict_str = dict_str.replace('    window["ytInitialPlayerResponse"]', '')
-        dict_str = dict_str.replace(";", "")
-        # 辞書形式に変換
-        dics = eval(dict_str)
-        break
+	        # javascript表記なので更に整形. falseとtrueの表記を直す
+	        dict_str = dict_str.replace("false","False")
+	        dict_str = dict_str.replace("true","True")
 
-stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
-                        ['itemSectionRenderer']['contents'][0]\
-                        ['shelfRenderer']['content']['expandedShelfContentsRenderer']['items'][0]\
-                        ['videoRenderer']
+	        # 辞書形式と認識すると簡単にデータを取得できるが, 末尾に邪魔なのがあるので消しておく（「空白2つ + \n + ;」を消す）
+	        dict_str = dict_str.rstrip("  \n;")
 
-watch = stream_description['videoId']
-title = stream_description['title']['simpleText']
-print(title)
+	        dict_str = dict_str.replace('    window["ytInitialPlayerResponse"]', '')
+	        dict_str = dict_str.replace(";", "")
+	        # 辞書形式に変換
+	        dics = eval(dict_str)
+	        break
+	reminder_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+	                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
+	                        ['itemSectionRenderer']['contents'][0]\
+	                        ['shelfRenderer']["content"]['horizontalListRenderer']['items']
+
+	reminder_list = []
+	for reminds in reminder_description:
+		reminds = reminds['gridVideoRenderer']
+		reminder_watch = reminds['videoId']
+		reminder_title = reminds['title']['simpleText']
+		reminder_date = reminds['upcomingEventData']['startTime'] #UNIX time
+		audience = reminds['shortViewCountText']['runs'][0]['text']
+		reminder_list.append({'watch': reminder_watch, 'title': reminder_title, 'start_time': reminder_date, 'audience': audience})                  
+	#watch = stream_description['videoId']
+	#title = stream_description['title']['runs'][0]['text']
+	#reminder_description = リマインダーのリスト
+	print(reminder_list)
+	#print('got remind livestream.')
+else:
+	print('no any livestream.')
