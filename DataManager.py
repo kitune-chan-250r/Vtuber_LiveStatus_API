@@ -159,7 +159,7 @@ BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
 
 all_liver = vlsa.get(BASE_URL + 'vtuber/')
 on_liver = vlsa.get(BASE_URL + 'onlive/')
-reminder = vlsa.get(BASE_URL + 'reminder/')
+reminder = vlsa.get(BASE_URL + 'reminder')
 
 #reminder all reset
 for remind in reminder:
