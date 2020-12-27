@@ -78,6 +78,7 @@ async def main(uid):
             remind = parsed.find_all('script', text=re.compile("今後のライブ ストリーム"))
             
             result = {}
+            result['onlive'] = {'uid': uid, 'status': False}
 
             if len(element_2) or len(remind) > 0:
                 for scrp in parsed.find_all("script"):
