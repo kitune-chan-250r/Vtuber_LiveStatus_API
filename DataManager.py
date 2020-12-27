@@ -147,9 +147,8 @@ async def main(uid):
                             try:
                                 audience = reminds['shortViewCountText']['runs'][0]['text']
                             except KeyError:
-                                print(uid, 'shortViewCountText missing error.')
                                 audience = 0
-                            result = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_time': reminder_date, 'audience': audience, 'flag': 'reminder'}
+                            result = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_datetime': reminder_date, 'audience': audience, 'flag': 'reminder'}
                             break
             else:
                 result = {'uid': uid, 'status': False}
