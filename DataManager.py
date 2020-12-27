@@ -210,5 +210,5 @@ for r in res:
         if int(gap.days) < 1:
             data = {'uid': r['uid'], 'start_datetime': r['start_datetime'], 'live_title': r['title'],
                     'live_url': 'https://www.youtube.com/watch?v='+r['watch'], 'audience': r['audience']} #'uid', 'start_datetime', 'live_title', 'live_url', 'audience'
-            res = vlsa.post(BASE_URL+'reminder/', data)
+            res = vlsa.post(BASE_URL+'reminder', data)
 
