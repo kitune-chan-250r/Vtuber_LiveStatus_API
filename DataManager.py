@@ -151,7 +151,7 @@ async def main(uid):
                             result = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_datetime': reminder_date, 'audience': audience, 'flag': 'reminder'}
                             break
             else:
-                result = {'uid': uid, 'status': False}
+                result = {'uid': uid, 'status': False, 'flag': 'onlive'}
     return result
 
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
