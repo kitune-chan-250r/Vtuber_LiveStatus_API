@@ -74,8 +74,9 @@ async def main(uid):
             
             #element_1 = parsed.find_all('script', text=re.compile("ライブ配信中"))len(element_1) > 0 and 
             element_2 = parsed.find_all('script', text=re.compile("人が視聴中"))
-
-            if len(element_2) > 0:
+            remind = parsed.find_all('script', text=re.compile("今後のライブ ストリーム"))
+            
+            if len(element_2) or len(remind) > 0:
                 for scrp in parsed.find_all("script"):
                     if "var ytInitialData" in scrp.text:
                         dict_str = scrp.text.split(" = ")[1]
@@ -90,6 +91,8 @@ async def main(uid):
                         
                         dics = eval(dict_str)
                         break
+
+            if len(element_2) > 0:
                 try:
                     '''2020-10-23 changed
                     stream_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
@@ -114,7 +117,22 @@ async def main(uid):
                     except KeyError:
                         title = "データ取得失敗 KeyError: stream_description['title']['simpleText']"
 
-                    result = {'watch': watch, 'title': title, 'uid': uid, 'status': True}
+                    result = {'watch': watch, 'title': title, 'uid': uid, 'status': True, 'flag': 'onlive'}
+
+            elif len(remind) > 0:
+                reminder_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+                                            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
+                                            ['itemSectionRenderer']['contents'][0]\
+                                            ['shelfRenderer']["content"]['horizontalListRenderer']['items']
+
+                for reminds in reminder_description:
+                    reminds = reminds['gridVideoRenderer']
+                    reminder_watch = reminds['videoId']
+                    reminder_title = reminds['title']['simpleText']
+                    reminder_date = reminds['upcomingEventData']['startTime'] #UNIX time
+                    audience = reminds['shortViewCountText']['runs'][0]['text']
+                    result = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_time': reminder_date, 'audience': audience, 'flag': 'reminder'}
+                    break
             else:
                 result = {'uid': uid, 'status': False}
     return result
@@ -123,6 +141,12 @@ BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
 
 all_liver = vlsa.get(BASE_URL + 'vtuber/')
 on_liver = vlsa.get(BASE_URL + 'onlive/')
+reminder = vlsa.get(BASE_URL + 'reminder/')
+
+#reminder all reset
+for remind in reminder:
+    res = vlsa.delete(BASE_URL+'reminder', remind['uid'])
+
 if len(on_liver) != 0:
     on_livers = [liver['uid']['uid'] for liver in on_liver]
 else:
@@ -139,7 +163,7 @@ res = [d.result() for d in done] #結果
 len(res)
 for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
-    if r['status'] is not False and r['uid'] not in on_livers:
+    if r['flag'] == 'onlive' and r['status'] is not False and r['uid'] not in on_livers:
         data = {'uid': r['uid'], 'live_title': r['title'],
                 'live_url': 'https://www.youtube.com/watch?v='+r['watch']}
         #on_liveに追加
@@ -148,7 +172,7 @@ for r in res:
     
     #1つ前の更新で放送中で返ってきたステータスも放送中だがタイトルが変わっていた場合
     #短期間に2度続けて放送するライバーに対応するための処理
-    elif r['status'] is not False and r['uid'] in on_livers:
+    elif r['flag'] == 'onlive' and r['status'] is not False and r['uid'] in on_livers:
         title = [l['live_title'] for l in on_liver if l['uid']['uid'] == r['uid']]
         if r['title'] != title[0]:
             res = vlsa.delete(BASE_URL+'onlive', r['uid'])
@@ -157,6 +181,12 @@ for r in res:
             res = vlsa.post(BASE_URL+'onlive', data)
     
     #1つ前の更新で放送中で返ってきたステータスが放送中ではなかった場合
-    elif r['status'] is False and r['uid'] in on_livers:
+    elif r['flag'] == 'onlive' and r['status'] is False and r['uid'] in on_livers:
         res = vlsa.delete(BASE_URL+'onlive', r['uid'])
+
+    #ここからreminder
+    elif r['flag'] == 'reminder':
+        data = {'uid': r['uid'], 'start_datetime': r['start_datetime'], 'live_title': r['title'],
+                'live_url': 'https://www.youtube.com/watch?v='+r['watch'], 'audience': r['audience']} #'uid', 'start_datetime', 'live_title', 'live_url', 'audience'
+        res = vlsa.post(BASE_URL+'reminder/', data)
 
