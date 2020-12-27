@@ -16,6 +16,12 @@ class On_Live(models.Model):
     live_title = models.CharField(max_length=100)
     live_url = models.CharField(max_length=100)
     
+class Reminds(models.Model):
+    uid = models.ForeignKey(Vtuber, on_delete=models.CASCADE, primary_key=True, unique=True)
+    start_datetime = models.CharField(max_length=100)#models.DateTimeField(auto_now_add=True)
+    live_title = models.CharField(max_length=100)
+    live_url = models.CharField(max_length=100)
+    audience = models.IntegerField(default=0)
 
 class LiveLog(models.Model): 
     time = models.DateTimeField(auto_now_add=True)
