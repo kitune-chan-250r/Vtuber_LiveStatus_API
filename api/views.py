@@ -155,13 +155,24 @@ class ReminderDetail(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#?pr=[production name]で検索可能に
+#?pr=[production name]で検索可能に ReminderListView
 class OnLiveListView(generics.ListCreateAPIView):
     queryset = On_Live.objects.all()
     serializer_class = OnLiveSerializer
     permission_classes = (AllowAny, )
     def get_queryset(self):
         queryset = On_Live.objects.all()
+        pr = self.request.query_params.get('pr', None)
+        if pr is not None:
+            queryset = queryset.filter(uid__production=pr)
+        return queryset
+
+class ReminderListView(generics.ListCreateAPIView):
+    queryset = Reminds.objects.all()
+    serializer_class = ReminderSerializer
+    permission_classes = (AllowAny, )
+    def get_queryset(self):
+        queryset = Reminds.objects.all()
         pr = self.request.query_params.get('pr', None)
         if pr is not None:
             queryset = queryset.filter(uid__production=pr)
