@@ -121,18 +121,36 @@ async def main(uid):
 
             elif len(remind) > 0:
                 reminder_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-                                            ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
-                                            ['itemSectionRenderer']['contents'][0]\
-                                            ['shelfRenderer']["content"]['horizontalListRenderer']['items']
-
-                for reminds in reminder_description:
-                    reminds = reminds['gridVideoRenderer']
-                    reminder_watch = reminds['videoId']
-                    reminder_title = reminds['title']['simpleText']
-                    reminder_date = reminds['upcomingEventData']['startTime'] #UNIX time
-                    audience = reminds['shortViewCountText']['runs'][0]['text']
-                    result = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_time': reminder_date, 'audience': audience, 'flag': 'reminder'}
-                    break
+                                           ["tabRenderer"]["content"]["sectionListRenderer"]["contents"]
+                is_not_grid = True
+                
+                for rem in reminder_description:
+                    if '今後のライブ ストリーム' in str(rem):
+                        #print(reminder_description)
+                        try:
+                            contents = rem['itemSectionRenderer']['contents'][0]\
+                                        ['shelfRenderer']["content"]['expandedShelfContentsRenderer']['items']
+                        except KeyError:
+                            contents = rem['itemSectionRenderer']['contents'][0]\
+                                      ['shelfRenderer']["content"]['horizontalListRenderer']['items']
+                            is_not_grid = False
+                        
+                        for reminds in contents:
+                            #reminds = reminds['videoRenderer']#['videoRenderer']['gridVideoRenderer']
+                            if is_not_grid:
+                                reminds = reminds['videoRenderer']
+                            else:
+                                reminds = reminds['gridVideoRenderer']
+                            reminder_watch = reminds['videoId']
+                            reminder_title = reminds['title']['simpleText']
+                            reminder_date = reminds['upcomingEventData']['startTime'] #UNIX time
+                            try:
+                                audience = reminds['shortViewCountText']['runs'][0]['text']
+                            except KeyError:
+                                print(uid, 'shortViewCountText missing error.')
+                                audience = 0
+                            result = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_time': reminder_date, 'audience': audience, 'flag': 'reminder'}
+                            break
             else:
                 result = {'uid': uid, 'status': False}
     return result
