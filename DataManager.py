@@ -162,11 +162,7 @@ BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/'
 
 all_liver = vlsa.get(BASE_URL + 'vtuber/')
 on_liver = vlsa.get(BASE_URL + 'onlive/')
-reminder = vlsa.get(BASE_URL + 'reminder')
 
-#reminder all reset
-for remind in reminder:
-    res = vlsa.delete(BASE_URL+'reminder', remind['uid'])
 
 if len(on_liver) != 0:
     on_livers = [liver['uid']['uid'] for liver in on_liver]
@@ -181,6 +177,12 @@ done,pending = loop.run_until_complete(
     asyncio.wait([main(uid) for uid in uids]))
 
 res = [d.result() for d in done] #結果
+
+reminder = vlsa.get(BASE_URL + 'reminder')
+
+#reminder all reset
+for remind in reminder:
+    res = vlsa.delete(BASE_URL+'reminder', remind['uid'])
 len(res)
 for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
