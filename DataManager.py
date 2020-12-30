@@ -182,8 +182,8 @@ reminder = vlsa.get(BASE_URL + 'reminder')
 
 #reminder all reset
 for remind in reminder:
-    res = vlsa.delete(BASE_URL+'reminder', remind['uid'])
-len(res)
+    res_reminder = vlsa.delete(BASE_URL+'reminder', remind['uid'])
+
 for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
     if r['onlive']['status'] is not False and r['onlive']['uid'] not in on_livers:
