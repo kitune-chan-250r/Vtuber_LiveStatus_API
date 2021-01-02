@@ -110,7 +110,7 @@ for uid in uids:
 
 """
 
-url = 'https://www.youtube.com/channel/UCL34fAoFim9oHLbVzMKFavQ'
+url = 'https://www.youtube.com/channel/UCIytNcoz4pWzXfLda0DoULQ'
 res = requests.get(url).text
 parsed = BeautifulSoup(res, "html.parser") #配信中２７
 
@@ -164,22 +164,31 @@ elif len(remind) > 0:
 	        dics = eval(dict_str)
 	        break
 	reminder_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
-	                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"][1]\
-	                        ['itemSectionRenderer']['contents'][0]\
-	                        ['shelfRenderer']["content"]['horizontalListRenderer']['items']
-
-	reminder_list = []
-	for reminds in reminder_description:
-		reminds = reminds['gridVideoRenderer']
-		reminder_watch = reminds['videoId']
-		reminder_title = reminds['title']['simpleText']
-		reminder_date = reminds['upcomingEventData']['startTime'] #UNIX time
-		audience = reminds['shortViewCountText']['runs'][0]['text']
-		reminder_list.append({'watch': reminder_watch, 'title': reminder_title, 'start_time': reminder_date, 'audience': audience})                  
-	#watch = stream_description['videoId']
-	#title = stream_description['title']['runs'][0]['text']
-	#reminder_description = リマインダーのリスト
-	print(reminder_list)
-	#print('got remind livestream.')
+	                        ["tabRenderer"]["content"]["sectionListRenderer"]["contents"]#[1]\
+	                        #['itemSectionRenderer']['contents'][0]\
+	                        #['shelfRenderer']#["content"]#['expandedShelfContentsRenderer']['items']#['horizontalListRenderer']['items']
+	#if reminder_description['title']['runs'][0]['text'] != '今後のライブ ストリーム':
+		#reminder_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
+	                        #["tabRenderer"]["content"]["sectionListRenderer"]["contents"][0]\
+	                        #['itemSectionRenderer']['contents'][0]\
+	                        #['shelfRenderer']
+	for rem in reminder_description:
+		if '今後のライブ ストリーム' in str(rem):
+			#print(reminder_description)
+			contents = rem['itemSectionRenderer']['contents'][0]\
+					      ['shelfRenderer']["content"]['expandedShelfContentsRenderer']['items']
+			reminder_list = []
+			for reminds in contents:
+				reminds = reminds['videoRenderer']#['videoRenderer']['gridVideoRenderer']
+				reminder_watch = reminds['videoId']
+				reminder_title = reminds['title']['simpleText']
+				reminder_date = reminds['upcomingEventData']['startTime'] #UNIX time
+				audience = reminds['shortViewCountText']['runs'][0]['text']
+				reminder_list.append({'watch': reminder_watch, 'title': reminder_title, 'start_time': reminder_date, 'audience': audience})                  
+			#watch = stream_description['videoId']
+			#title = stream_description['title']['runs'][0]['text']
+			#reminder_description = リマインダーのリスト
+			print(reminder_list)
+			#print('got remind livestream.')
 else:
 	print('no any livestream.')

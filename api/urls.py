@@ -8,6 +8,9 @@ urlpatterns = [
     path('onlive', OnLiveList.as_view()),#onlive 全件取得
     path('onlive/<str:pk>/', OnLiveDetail.as_view()),
     path('onlive/', OnLiveListView.as_view()),
+    path('reminder/', ReminderListView.as_view()),#2020-12-28 reminder
+    path('reminder', ReminderList.as_view()),
+    path('reminder/<str:pk>/', ReminderDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
