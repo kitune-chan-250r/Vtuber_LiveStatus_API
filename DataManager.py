@@ -243,7 +243,7 @@ for r in res:
 
 
 #transaction送信用
-for r in res 
+for r in res:
     if r['onlive']['status'] is True:
         postTransaction(r['onlive']['uid'], r['onlive'])
 requests.get(Blockchain_URL+'mining/')
