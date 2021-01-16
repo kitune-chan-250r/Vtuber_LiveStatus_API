@@ -145,7 +145,7 @@ if len(script2) > 0:
 
 	watch = stream_description['videoId']
 	title = stream_description['title']['runs'][0]['text']
-	print(title)
+	print()
 elif len(remind) > 0:
 	for scrp in parsed.find_all("script"):
 	    if "var ytInitialData" in scrp.text:
@@ -192,3 +192,12 @@ elif len(remind) > 0:
 			#print('got remind livestream.')
 else:
 	print('no any livestream.')
+
+
+BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
+Blockchain_URL = 'https://vtuber-live-blockchain.herokuapp.com/'
+
+all_liver = get(BASE_URL + 'vtuber/')
+on_liver = get(BASE_URL + 'onlive/')
+
+print([x['start_time'] for x in on_liver if x['uid']['uid'] == uid][0])

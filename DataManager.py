@@ -113,6 +113,7 @@ async def main(uid):
 
                 else:
                     watch = stream_description['videoId']
+                    audience = int(stream_description['viewCountText']['runs'][0]['text'].replace(',', ''))
                     
                     try:
                         #title = stream_description['title']['simpleText']
@@ -120,7 +121,7 @@ async def main(uid):
                     except KeyError:
                         title = "データ取得失敗 KeyError: stream_description['title']['simpleText']"
 
-                    result['onlive'] = {'watch': watch, 'title': title, 'uid': uid, 'status': True, 'flag': 'onlive'}
+                    result['onlive'] = {'watch': watch, 'title': title, 'uid': uid, 'status': True, 'flag': 'onlive', 'audience': audience}
 
             elif len(remind) > 0:
                 reminder_description = dics["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][0]\
@@ -151,14 +152,33 @@ async def main(uid):
                                 audience = reminds['shortViewCountText']['runs'][0]['text']
                             except KeyError:
                                 audience = 0
-                            result['reminder'] = {'watch': reminder_watch, 'title': reminder_title, 'uid': uid,'start_datetime': reminder_date, 'audience': audience, 'flag': 'reminder'}
+                            result['reminder'] = {'watch': reminder_watch, 'title': reminder_title,
+                                                  'uid': uid,'start_datetime': reminder_date, 'audience': audience, 'flag': 'reminder'}
 
                             break
             else:
                 result['onlive'] = {'uid': uid, 'status': False, 'flag': 'onlive'}
     return result
 
+def postTransaction(uid, res):
+    liver_data = [x for x in all_liver if x['uid'] == uid][0]
+    if uid in on_livers:
+        startdatetime = [x['start_time'] for x in on_liver if x['uid']['uid'] == uid][0]
+    else:
+        startdatetime = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9)))
+    transaction = {
+        'liver': str(liver_data),
+        'title': res['title'],
+        'startdatetime': startdatetime,
+        'stream_url' : 'https://www.youtube.com/watch?v='+res['watch'],
+        'onair': True,
+        'audience': res['audience']
+    }
+    requests.post(Blockchain_URL+'transaction/', transaction)
+
+
 BASE_URL = 'https://vtuber-livestatus-api.herokuapp.com/api/' 
+Blockchain_URL = 'https://vtuber-live-blockchain.herokuapp.com/'
 
 all_liver = vlsa.get(BASE_URL + 'vtuber/')
 on_liver = vlsa.get(BASE_URL + 'onlive/')
@@ -220,4 +240,11 @@ for r in res:
             data = {'uid': r['uid'], 'start_datetime': r['start_datetime'], 'live_title': r['title'],
                     'live_url': 'https://www.youtube.com/watch?v='+r['watch'], 'audience': r['audience']} #'uid', 'start_datetime', 'live_title', 'live_url', 'audience'
             res = vlsa.post(BASE_URL+'reminder', data)
+
+
+#transaction送信用
+for r in res 
+    if r['onlive']['status'] is True:
+        postTransaction(r['onlive']['uid'], r['onlive'])
+requests.get(Blockchain_URL+'mining/')
 
