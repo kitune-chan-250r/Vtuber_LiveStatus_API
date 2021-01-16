@@ -5,6 +5,7 @@ import re
 import Vtuber_LiveStatus_API_lib as vlsa
 from tqdm import tqdm
 import datetime
+import requests
 
 #before update
 """async def main(uid):
