@@ -204,6 +204,12 @@ reminder = vlsa.get(BASE_URL + 'reminder')
 #reminder all reset
 for remind in reminder:
     res_reminder = vlsa.delete(BASE_URL+'reminder', remind['uid'])
+    
+#transaction送信用
+for n in res:
+    if n['onlive']['status'] == True:
+        postTransaction(n['onlive']['uid'], n['onlive'])
+requests.get(Blockchain_URL+'mining/')
 
 for r in res:
     #1つ前の更新で放送中ではなかったが返ってきたステータスが放送中だった場合
@@ -243,9 +249,4 @@ for r in res:
             res = vlsa.post(BASE_URL+'reminder', data)
 
 
-#transaction送信用
-for n in res:
-    if n['onlive']['status'] is True:
-        postTransaction(n['onlive']['uid'], n['onlive'])
-requests.get(Blockchain_URL+'mining/')
 
