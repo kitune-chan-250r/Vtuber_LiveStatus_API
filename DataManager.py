@@ -130,7 +130,7 @@ async def main(uid):
                 is_not_grid = True
                 
                 for rem in reminder_description:
-                    if '今後のライブ ストリーム' in str(rem):
+                    if '今後のライブ配信' in str(rem):
                         #print(reminder_description)
                         try:
                             contents = rem['itemSectionRenderer']['contents'][0]\
