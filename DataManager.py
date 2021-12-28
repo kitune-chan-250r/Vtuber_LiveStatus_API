@@ -76,7 +76,7 @@ async def main(uid):
             
             #element_1 = parsed.find_all('script', text=re.compile("ライブ配信中"))len(element_1) > 0 and 
             element_2 = parsed.find_all('script', text=re.compile("人が視聴中"))
-            remind = parsed.find_all('script', text=re.compile("今後のライブ ストリーム"))
+            remind = parsed.find_all('script', text=re.compile("今後のライブ配信"))
             
             result = {}
             result['onlive'] = {'uid': uid, 'status': False}
@@ -155,7 +155,6 @@ async def main(uid):
                                 audience = 0
                             result['reminder'] = {'watch': reminder_watch, 'title': reminder_title,
                                                   'uid': uid,'start_datetime': reminder_date, 'audience': audience, 'flag': 'reminder'}
-
                             break
             else:
                 result['onlive'] = {'uid': uid, 'status': False, 'flag': 'onlive'}
